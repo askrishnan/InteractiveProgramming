@@ -102,9 +102,6 @@ dictCountries = {'Afghanistan': 'Afghanistan', 'Albania': 'Albania',
                  'Yemen': 'Yemen', 'Zambia': 'Zambia', 'Zimbabwe': 'Zimbabwe'}
 
 
-country = random.choice(list(dictCountries.keys()))
-
-
 def get_dictionary(country):
     webpage = urllib.request.urlopen('https://en.wikipedia.org/wiki/%s' % dictCountries.get(country))
     soup = BeautifulSoup(webpage, 'lxml')
@@ -128,71 +125,83 @@ def get_capital(country):
     else:
         return(dictOfEntries)
 
-
-window = Tk()
-window.title("Do you know your capitals?")
-window.geometry("500x500")
+def game():
+    country = random.choice(list(dictCountries.keys()))
 
 
-question = tkinter.Label(window, text = "What is the capital of %s?" % country)
-question.place(x = 5, y = 5)
+    window = Tk()
+    window.title("Do you know your capitals?")
+    window.geometry("500x500")
 
 
-def result(txt):
-    if txt == get_capital(country):
-        msg = messagebox.showinfo('Wow', "You're right!")
-    else:
-        msg = messagebox.showinfo('NO', "WRONG!")
+    question = tkinter.Label(window, text = "What is the capital of %s?" % country)
+    question.place(x = 5, y = 5)
 
 
-Atxt = 0
-Btxt = 0
-Ctxt = 0
-Dtxt = 0
-buttons = [Atxt, Btxt, Ctxt, Dtxt]
+    def result(txt):
+        if txt == get_capital(country):
+            restart()
+        else:
+            msg = messagebox.showinfo('NO', "WRONG! Try again.")
 
 
-def choose_correct():
-    val = [0, 1, 2, 3]
-    correct = random.choice(val)
-    return correct
+    def restart():
+        msg = messagebox.showinfo("You're Right")
+        window.destroy()
+        game()
 
 
-correct = choose_correct()
-buttons[correct] = get_capital(country)
+    Atxt = 0
+    Btxt = 0
+    Ctxt = 0
+    Dtxt = 0
+    buttons = [Atxt, Btxt, Ctxt, Dtxt]
 
 
-if buttons[0] != buttons[correct]:
-    buttons[0]= get_capital(random.choice(list(dictCountries.keys())))
-if buttons[1] != buttons[correct]:
-    buttons[1]= get_capital(random.choice(list(dictCountries.keys())))
-if buttons[2] != buttons[correct]:
-    buttons[2]= get_capital(random.choice(list(dictCountries.keys())))
-if buttons[3] != buttons[correct]:
-    buttons[3]= get_capital(random.choice(list(dictCountries.keys())))
+    def choose_correct():
+        val = [0, 1, 2, 3]
+        correct = random.choice(val)
+        return correct
 
 
-Atxt = buttons[0]
-Btxt = buttons[1]
-Ctxt = buttons[2]
-Dtxt = buttons[3]
+    correct = choose_correct()
+    buttons[correct] = get_capital(country)
 
 
-A = Button(window, text=Atxt, command=lambda: result(Atxt))
-A.place(x=50, y=50)
-# A.pack()
+    if buttons[0] != buttons[correct]:
+        buttons[0]= get_capital(random.choice(list(dictCountries.keys())))
+    if buttons[1] != buttons[correct]:
+        buttons[1]= get_capital(random.choice(list(dictCountries.keys())))
+    if buttons[2] != buttons[correct]:
+        buttons[2]= get_capital(random.choice(list(dictCountries.keys())))
+    if buttons[3] != buttons[correct]:
+        buttons[3]= get_capital(random.choice(list(dictCountries.keys())))
 
 
-B = Button(window, text=Btxt, command=lambda: result(Btxt))
-B.place(x=50, y=100)
-# B.pack()
+    Atxt = buttons[0]
+    Btxt = buttons[1]
+    Ctxt = buttons[2]
+    Dtxt = buttons[3]
 
-C = Button(window, text=Ctxt, command=lambda: result(Ctxt))
-C.place(x=50, y=150)
-# C.pack()
 
-D = Button(window, text=Dtxt, command=lambda: result(Dtxt))
-D.place(x=50, y=200)
-# D.pack()
+    A = Button(window, text=Atxt, command=lambda: result(Atxt))
+    A.place(x=50, y=50)
+    # A.pack()
 
-window.mainloop()
+
+    B = Button(window, text=Btxt, command=lambda: result(Btxt))
+    B.place(x=50, y=100)
+    # B.pack()
+
+    C = Button(window, text=Ctxt, command=lambda: result(Ctxt))
+    C.place(x=50, y=150)
+    # C.pack()
+
+    D = Button(window, text=Dtxt, command=lambda: result(Dtxt))
+    D.place(x=50, y=200)
+    # D.pack()
+
+    window.mainloop()
+
+
+game()
